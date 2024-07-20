@@ -1,58 +1,76 @@
 //! Spawn the player.
 
 use bevy::prelude::*;
+use iyes_progress::prelude::*;
+use leafwing_input_manager::InputManagerBundle;
 
 use crate::{
+    camera::CameraFollow,
     game::{
-        animation::PlayerAnimation,
         assets::{HandleMap, ImageKey},
-        movement::{Movement, MovementController, WrapWithinWindow},
+        controls::player_action::PlayerAction,
+        map::tiles::TILE_SIZE,
+        movement::Movement,
+        state::GameState,
     },
+    palette,
     screen::Screen,
 };
 
 pub(super) fn plugin(app: &mut App) {
     app.observe(spawn_player);
     app.register_type::<Player>();
+    app.add_systems(
+        Update,
+        player_spawn_progress
+            .track_progress()
+            .run_if(in_state(GameState::Setup)),
+    );
 }
 
 #[derive(Event, Debug)]
-pub struct SpawnPlayer;
+pub struct SpawnPlayer {
+    pub position: UVec2,
+}
 
 #[derive(Component, Debug, Clone, Copy, PartialEq, Eq, Default, Reflect)]
 #[reflect(Component)]
 pub struct Player;
 
 fn spawn_player(
-    _trigger: Trigger<SpawnPlayer>,
+    trigger: Trigger<SpawnPlayer>,
     mut commands: Commands,
     image_handles: Res<HandleMap<ImageKey>>,
-    mut texture_atlas_layouts: ResMut<Assets<TextureAtlasLayout>>,
+    mut camera_query: Query<&mut Transform, With<Camera>>,
 ) {
-    // A texture atlas is a way to split one image with a grid into multiple sprites.
-    // By attaching it to a [`SpriteBundle`] and providing an index, we can specify which section of the image we want to see.
-    // We will use this to animate our player character. You can learn more about texture atlases in this example:
-    // https://github.com/bevyengine/bevy/blob/latest/examples/2d/texture_atlas.rs
-    let layout = TextureAtlasLayout::from_grid(UVec2::splat(32), 6, 2, Some(UVec2::splat(1)), None);
-    let texture_atlas_layout = texture_atlas_layouts.add(layout);
-    let player_animation = PlayerAnimation::new();
+    let position = trigger.event().position.as_vec2() * TILE_SIZE;
 
     commands.spawn((
         Name::new("Player"),
         Player,
         SpriteBundle {
-            texture: image_handles[&ImageKey::Ducky].clone_weak(),
-            transform: Transform::from_scale(Vec2::splat(8.0).extend(1.0)),
+            sprite: Sprite {
+                color: palette::PLAYER_COLOR,
+                ..default()
+            },
+            texture: image_handles[&ImageKey::Player].clone_weak(),
+            transform: Transform::from_translation(position.extend(2.)),
             ..Default::default()
         },
-        TextureAtlas {
-            layout: texture_atlas_layout.clone(),
-            index: player_animation.get_atlas_index(),
-        },
-        MovementController::default(),
-        Movement { speed: 420.0 },
-        WrapWithinWindow,
-        player_animation,
+        InputManagerBundle::with_map(PlayerAction::default_input_map()),
+        Movement { speed: 400. },
+        CameraFollow,
         StateScoped(Screen::Playing),
     ));
+
+    let Ok(mut camera_transform) = camera_query.get_single_mut() else {
+        error!("No camera found");
+        return;
+    };
+
+    camera_transform.translation = position.extend(0.);
+}
+
+fn player_spawn_progress(player_query: Query<Entity, With<Player>>) -> Progress {
+    (player_query.iter().len() == 1).into()
 }

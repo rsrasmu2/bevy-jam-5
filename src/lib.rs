@@ -1,7 +1,10 @@
+pub mod camera;
 #[cfg(feature = "dev")]
 mod dev_tools;
 mod game;
+pub mod palette;
 mod screen;
+mod stable_interpolate;
 mod ui;
 
 use bevy::{
@@ -53,7 +56,7 @@ impl Plugin for AppPlugin {
         );
 
         // Add other plugins.
-        app.add_plugins((game::plugin, screen::plugin, ui::plugin));
+        app.add_plugins((game::plugin, screen::plugin, ui::plugin, camera::plugin));
 
         // Enable dev tools for dev builds.
         #[cfg(feature = "dev")]

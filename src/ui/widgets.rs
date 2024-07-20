@@ -2,7 +2,9 @@
 
 use bevy::{ecs::system::EntityCommands, prelude::*, ui::Val::*};
 
-use super::{interaction::InteractionPalette, palette::*};
+use crate::palette::*;
+
+use super::interaction::InteractionPalette;
 
 /// An extension trait for spawning UI widgets.
 pub trait Widgets {

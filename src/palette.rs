@@ -8,3 +8,9 @@ pub const LABEL_TEXT: Color = Color::srgb(0.867, 0.827, 0.412);
 pub const HEADER_TEXT: Color = Color::srgb(0.867, 0.827, 0.412);
 
 pub const NODE_BACKGROUND: Color = Color::srgb(0.286, 0.478, 0.773);
+
+pub const TILE_COLOR: Color = Color::oklch(0.33, 0.04, 240.);
+pub const GRID_COLOR: Color = Color::oklcha(0., 0., 0., 0.5);
+pub const GRID_HOVERED_COLOR: Color = Color::oklcha(1., 0., 0., 0.8);
+
+pub const PLAYER_COLOR: Color = Color::oklch(0.87, 0.1, 95.);
