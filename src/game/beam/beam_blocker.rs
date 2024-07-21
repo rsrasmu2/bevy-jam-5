@@ -24,9 +24,7 @@ fn resize_beam(
     for (mut transform, hits, mut beam) in beam_query.iter_mut() {
         let mut smallest_distance_sqr = Beam::DEFAULT_LENGTH * Beam::DEFAULT_LENGTH;
         for hit in hits.iter() {
-            warn!("Hit: {:?}", hit);
             if blocker_query.contains(hit.entity) {
-                warn!("Blocker found");
                 let hit_dist_sqr = transform.translation.xy().distance_squared(hit.point1);
                 if hit_dist_sqr < smallest_distance_sqr {
                     smallest_distance_sqr = hit_dist_sqr;
