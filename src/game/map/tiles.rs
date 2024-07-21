@@ -34,6 +34,7 @@ impl Tile {
         }
     }
 
+    #[allow(dead_code)]
     pub fn position(&self) -> UVec2 {
         self.position
     }
@@ -50,6 +51,7 @@ pub struct TileMap {
 }
 
 impl TileMap {
+    #[allow(dead_code)]
     pub fn new(size: UVec2) -> Self {
         Self {
             size,
@@ -57,6 +59,7 @@ impl TileMap {
         }
     }
 
+    #[allow(dead_code)]
     pub fn size(&self) -> UVec2 {
         self.size
     }
