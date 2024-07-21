@@ -5,10 +5,11 @@ use bevy::prelude::*;
 //mod animation;
 pub mod assets;
 pub mod audio;
-pub mod controls;
+pub mod beam;
 pub mod map;
 pub mod movement;
-pub mod spawn;
+mod physics;
+pub mod player;
 pub mod state;
 
 pub(super) fn plugin(app: &mut App) {
@@ -17,8 +18,9 @@ pub(super) fn plugin(app: &mut App) {
         state::plugin,
         audio::plugin,
         assets::plugin,
-        controls::plugin,
-        spawn::plugin,
+        player::plugin,
         map::plugin,
+        physics::plugin,
+        beam::plugin,
     ));
 }

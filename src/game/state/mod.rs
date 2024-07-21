@@ -4,10 +4,11 @@ use iyes_progress::prelude::*;
 use crate::screen::Screen;
 
 mod playing;
+mod respawning;
 mod setup;
 
 pub(super) fn plugin(app: &mut App) {
-    app.add_plugins((setup::plugin, playing::plugin));
+    app.add_plugins((setup::plugin, playing::plugin, respawning::plugin));
     app.add_plugins(ProgressPlugin::new(GameState::Setup).continue_to(GameState::Playing));
     app.add_sub_state::<GameState>();
 }
@@ -18,4 +19,5 @@ pub enum GameState {
     #[default]
     Setup,
     Playing,
+    Respawning,
 }

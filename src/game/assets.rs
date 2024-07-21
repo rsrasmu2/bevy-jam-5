@@ -20,6 +20,9 @@ pub enum ImageKey {
     Player,
     Tile,
     TileGrid,
+    Building,
+    Beam,
+    PlayerSpawner,
 }
 
 impl AssetKey for ImageKey {
@@ -52,6 +55,33 @@ impl FromWorld for HandleMap<ImageKey> {
                 ImageKey::TileGrid,
                 asset_server.load_with_settings(
                     "images/tile_grid.png",
+                    |settings: &mut ImageLoaderSettings| {
+                        settings.sampler = ImageSampler::nearest();
+                    },
+                ),
+            ),
+            (
+                ImageKey::Building,
+                asset_server.load_with_settings(
+                    "images/building.png",
+                    |settings: &mut ImageLoaderSettings| {
+                        settings.sampler = ImageSampler::nearest();
+                    },
+                ),
+            ),
+            (
+                ImageKey::Beam,
+                asset_server.load_with_settings(
+                    "images/beam.png",
+                    |settings: &mut ImageLoaderSettings| {
+                        settings.sampler = ImageSampler::nearest();
+                    },
+                ),
+            ),
+            (
+                ImageKey::PlayerSpawner,
+                asset_server.load_with_settings(
+                    "images/player_spawner.png",
                     |settings: &mut ImageLoaderSettings| {
                         settings.sampler = ImageSampler::nearest();
                     },

@@ -3,6 +3,7 @@ pub mod camera;
 mod dev_tools;
 mod game;
 pub mod palette;
+pub mod render_layer;
 mod screen;
 mod stable_interpolate;
 mod ui;

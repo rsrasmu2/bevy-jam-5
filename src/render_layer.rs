@@ -1,0 +1,6 @@
+pub const RENDER_LAYER_TILE: f32 = 0.;
+pub const RENDER_LAYER_GRID: f32 = 100.;
+pub const RENDER_LAYER_PLAYER_SPAWNER: f32 = 200.;
+pub const RENDER_LAYER_PLAYER: f32 = 300.;
+pub const RENDER_LAYER_BUILDING: f32 = 400.;
+pub const RENDER_LAYER_BEAM: f32 = 500.;

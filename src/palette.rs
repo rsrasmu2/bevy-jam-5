@@ -14,3 +14,7 @@ pub const GRID_COLOR: Color = Color::oklcha(0., 0., 0., 0.5);
 pub const GRID_HOVERED_COLOR: Color = Color::oklcha(1., 0., 0., 0.8);
 
 pub const PLAYER_COLOR: Color = Color::oklch(0.87, 0.1, 95.);
+pub const BUILDING_COLOR: Color = Color::oklch(0.70, 0.2, 150.);
+pub const BEAM_COLOR: Color = Color::oklch(0.60, 0.25, 30.);
+
+pub const PLAYER_SPAWNER_COLOR: Color = Color::oklch(0.70, 0.17, 234.);

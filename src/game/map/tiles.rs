@@ -3,6 +3,7 @@ use bevy::{prelude::*, utils::HashMap};
 use crate::{
     game::assets::{HandleMap, ImageKey},
     palette,
+    render_layer::{RENDER_LAYER_GRID, RENDER_LAYER_TILE},
 };
 
 pub const TILE_SIZE: f32 = 64.;
@@ -21,11 +22,16 @@ pub(super) fn plugin(app: &mut App) {
 pub struct Tile {
     position: UVec2,
     grid: Entity,
+    pub building: Option<Entity>,
 }
 
 impl Tile {
     pub fn new(position: UVec2, grid: Entity) -> Self {
-        Self { position, grid }
+        Self {
+            position,
+            grid,
+            building: None,
+        }
     }
 
     pub fn position(&self) -> UVec2 {
@@ -68,6 +74,10 @@ impl TileMap {
         } else {
             None
         }
+    }
+
+    pub fn tile_to_world(&self, position: UVec2) -> Vec2 {
+        position.as_vec2() * TILE_SIZE
     }
 }
 
@@ -196,7 +206,9 @@ fn spawn_tile_map(
                     SpriteBundle {
                         sprite: grid_sprite.clone(),
                         texture: image_handles[&ImageKey::TileGrid].clone_weak(),
-                        transform: Transform::from_translation(Vec2::splat(0.).extend(1.)),
+                        transform: Transform::from_translation(
+                            Vec2::splat(0.).extend(RENDER_LAYER_GRID),
+                        ),
                         ..default()
                     },
                 ))
@@ -210,7 +222,9 @@ fn spawn_tile_map(
                     SpriteBundle {
                         sprite: tile_sprite.clone(),
                         texture: image_handles[&ImageKey::Tile].clone_weak(),
-                        transform: Transform::from_translation(tile.world_position().extend(0.)),
+                        transform: Transform::from_translation(
+                            tile.world_position().extend(RENDER_LAYER_TILE),
+                        ),
                         ..default()
                     },
                 ))
